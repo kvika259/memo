@@ -7,6 +7,7 @@ import { useState, useCallback } from "react";
 import CounterButton from "./components/CounterButton";
 import ItemList from "./components/ItemList";
 import SearchInput from "./components/SearchInput";
+import { useMemo } from "react";
 
 const arr = [];
 for (let i = 1; i < 101; i++) {
@@ -20,12 +21,16 @@ function App() {
 
   const [text, setText] = useState("");
   const handleChange = useCallback(e => setText(e.target.value), []);
+
+  const searching = useMemo(() => {
+    return arr.filter(i => i.includes(text));
+  }, [text]);
   return (
     <>
       Счётчик: {counter}
       <CounterButton handleClick={handleClick} />
       <SearchInput text={text} handleChange={handleChange} />
-      <ItemList search={text} arr={arr} />
+      <ItemList arr={searching} />
     </>
   );
 }
